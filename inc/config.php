@@ -1,11 +1,10 @@
 <?php
 //Config v.0.1
 
-
-require $_SERVER['DOCUMENT_ROOT'] .'/vendor/firebase/php-jwt/src/JWT.php';
+require 'vendor/autoload.php';
 
 //Debugging 
-error_reporting(0);
+error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 set_time_limit(0);
 
@@ -13,16 +12,15 @@ set_time_limit(0);
 define('APP_SECRET','VWWsiFrZHvPw55rf98SArA4WzP3qVCGz');
 
 //Config
-$config["url"] = "http://cloudextractors.online";
-$config["domain"] = "cloudextractors.online";
+$config["url"] = "http://localhost";
+$config["domain"] = "localhost";
 
-$config["api_url"] = "http://cloudextractors.online:8000";
 
 class database extends PDO
 {
     const PARAM_host = "localhost";
     const PARAM_usr = "root";
-    const PARAM_pass = "ultimate123";
+    const PARAM_pass = "";
     const PARAM_db = "datascraper";
 
     public function __construct($options=null)
