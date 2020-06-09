@@ -1,14 +1,13 @@
 <?php
 
 require("../inc/config.php");
-require("../inc/app/scrapers.php");
+require("../inc/app/fields.class.php");
 
 if (!isset($_SESSION["serial_key"])) {
 	header("location: " . $config["url"] . "/admin/");
 }
 $page = $_GET["scraper"] ?? "index";
-
-if (!scrapers::isScraper($page) & $page != "index") {
+if (!fields::isScraper($page) & $page != "index") {
 	header("location: index");
 }
 
@@ -74,7 +73,7 @@ if (!scrapers::isScraper($page) & $page != "index") {
 										<table id="dataTableExample" class="table dataTable no-footer">
 											<thead>
 												<tr>
-													<?php echo scrapers::format($page, "field"); ?>
+													<?php echo fields::format($page, "field"); ?>
 												</tr>
 											</thead>
 											<tbody id="dataresults">
@@ -90,8 +89,8 @@ if (!scrapers::isScraper($page) & $page != "index") {
 								<div class="card-body">
 									<h6 class="card-title"><?php echo $page; ?></h6>
 									<form method="post" id="scraperForm" class="forms">
-										<?php print_r(scrapers::format($page, "form")); ?>
-										<button type="submit" name="scrape" class="btn btn-primary mr-2">Scrape</button>
+										<?php print_r(fields::format($page, "form")); ?>
+										<button type="submit" id="startScrape" name="scrape" class="btn btn-primary mr-2">Scrape</button>
 									</form>
 								</div>
 							</div>

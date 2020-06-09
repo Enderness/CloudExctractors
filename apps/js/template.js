@@ -25,8 +25,24 @@ $(document).ready(function() {
         //Datatable
         var url = "/apps/inc/format.php?scrape="+page+"&"+data;
 
-        $('#dataTableExample').DataTable().ajax.url(url).load();
- 
+        $.ajax({
+            url:url,
+            success:function(response)
+            {
+              $("#startScrape").removeAttr("disabled");
+            },
+            xhr: function(){
+                var xhr = $.ajaxSettings.xhr() ;
+                xhr.onprogress = function(evt){ 
+                    $("#startScrape").attr("disabled","true");
+                    var result_data = evt.currentTarget.responseText.split(",");
+                    var entry = result_data[result_data.length-1]
+                    $("#dataTableExample").DataTable().row.add(JSON.parse(entry)).draw(false);
+                };
+                return xhr ;
+            }
+        });
+
     });
     
     if(page=="facebook" && $.cookie("facebook_token") !== undefined)

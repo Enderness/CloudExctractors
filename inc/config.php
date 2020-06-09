@@ -1,7 +1,8 @@
 <?php
 //Config v.0.1
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
+require '../vendor/firebase/php-jwt/src/JWT.php';
 
 //Debugging 
 error_reporting(E_ALL);
