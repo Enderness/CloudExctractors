@@ -24,7 +24,7 @@ function delete_key(id)
     type: "POST",
     data: {"delete_key":id}
   })
-  $("#row"+id).remove();
+  $("#dataTableExample").DataTable().row($("#row"+id)).delete();
 }
 function delete_trial(id)
 {
@@ -124,6 +124,27 @@ $(document).ready(function() {
       });
     }
 
+    $('#dataTableExample').DataTable({
+      "aLengthMenu": [
+        [10, 30, 50, -1],
+        [10, 30, 50, "All"]
+      ],
+      "iDisplayLength": 10,
+      processing: true,
+      "language": {
+        search: ""
+      }});
+
+$('#dataTableExample').each(function() {
+      var datatable = $(this);
+      // SEARCH - Add the placeholder for Search and Turn this into in-line form control
+      var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
+      search_input.attr('placeholder', 'Search');
+      search_input.removeClass('form-control-sm');
+      // LENGTH - Inline-Form control
+      var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
+      length_sel.removeClass('form-control-sm');
+    });
 
     // Applying perfect-scrollbar 
     if ($('.sidebar .sidebar-body').length) {
@@ -146,6 +167,13 @@ $(document).ready(function() {
       }
     });
 
+    if(typeof notification !== "undefined")
+    {
+      Swal.fire({
+            icon:notification[0],
+            title:notification[1]
+          });
+    }
 
     // Settings sidebar toggle
     $('.settings-sidebar-toggler').on('click', function(e) {

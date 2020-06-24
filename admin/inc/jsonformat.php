@@ -2,9 +2,7 @@
 
 //This page is for formatting json data for ajax requests
 
-include("../../inc/config.php");
-include("../../inc/app/utils.php");
-include("../../inc/app/admin.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/admin/inc/global.php");
 
 header("Content-type: application/json");
 

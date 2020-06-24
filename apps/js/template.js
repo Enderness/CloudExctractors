@@ -1,3 +1,4 @@
+
 $(document).ready(function() { 
   'use strict';
   $(function() {
@@ -8,41 +9,74 @@ $(document).ready(function() {
     var navbar = $('.navbar').not('.top-navbar');
 
     $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
-     Swal.fire({
-      icon:"error",
-      title:"Error",
-      text:$.cookie("error")});
-};
+        Swal.fire({
+          icon:"error",
+          title:"Error",
+          text:message
+      });
+    };
 
     //Scraper thingy
     $("#scraperForm").submit(function(event) {
 
         event.preventDefault();
+        
+        if($("#input_Token").length && page=="facebook")
+        {
+          $.cookie("facebook_token",$("#input_Token").val());
+        }
+
+        $("#startScrape").attr("disabled","true");
+        $("#stopScrape").removeAttr("disabled");
 
         var data = $(this).serialize();
 
 
         //Datatable
         var url = "/apps/inc/format.php?scrape="+page+"&"+data;
+        var datatable = $('#dataTableExample').DataTable();
 
-        $.ajax({
+        window.scraping = $.ajax({
             url:url,
-            success:function(response)
+            dataType: "text",
+            success:function()
             {
-              $("#startScrape").removeAttr("disabled");
+              Swal.fire({
+                icon:"success",
+                title:"Finished",
+                text:"Scraping was finnished!"
+              });
+             $("#startScrape").removeAttr("disabled");
+             $("#stopScrape").attr("disabled", "true");
             },
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr() ;
                 xhr.onprogress = function(evt){ 
-                    $("#startScrape").attr("disabled","true");
-                    var result_data = evt.currentTarget.responseText.split(",");
-                    var entry = result_data[result_data.length-1]
-                    $("#dataTableExample").DataTable().row.add(JSON.parse(entry)).draw(false);
+                    var result_data = JSON.parse('{"data":['+evt.currentTarget.responseText+']}')["data"];
+                    datatable.clear();
+                    datatable.rows.add(result_data).draw();
+
                 };
                 return xhr ;
             }
         });
 
+    });
+
+    $("#stopScrape").click(function(x) {
+      window.scraping.abort();
+      Swal.fire({
+        icon:"success",
+        title:"Aborted",
+        text:"Scraping was stopped!"
+      });
+      $("#startScrape").removeAttr("disabled");
+      $("#stopScrape").attr("disabled", "true");
+    });
+
+    $("#clearScrape").click(function(x) {
+     $('#dataTableExample').DataTable().clear(); 
+     $('#dataTableExample').DataTable().draw(); 
     });
     
     if(page=="facebook" && $.cookie("facebook_token") !== undefined)
@@ -55,6 +89,10 @@ $(document).ready(function() {
         [10, 30, 50, -1],
         [10, 30, 50, "All"]
       ],
+      dom: 'Bfrtip',
+      buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
       "iDisplayLength": 10,
       processing: true,
       "language": {
@@ -63,10 +101,16 @@ $(document).ready(function() {
 
     $('#input_Query').tagsInput();
 
-    $("input").on("keydown", function (e) {
-        return e.which !== 32;
+    $(".buttons-copy").click(function() {
+      Swal.fire({
+        icon:"info",
+        title:"Copied",
+        text:"Data was copied to your clipboard."
+      });
     });
 
+
+    $(".dt-buttons").prepend('<h6 style="display: inline-block;">Export:</h6>');
     $('#dataTableExample').each(function() {
       var datatable = $(this);
       // SEARCH - Add the placeholder for Search and Turn this into in-line form control
@@ -77,6 +121,9 @@ $(document).ready(function() {
       var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
       length_sel.removeClass('form-control-sm');
     });
+      $('.dt-button').each(function() {
+          $(this).addClass("btn btn-primary mr-2");
+      });
 
     // initializing bootstrap tooltip
     $('[data-toggle="tooltip"]').tooltip();

@@ -32,7 +32,7 @@
         </a>
         </li>        
         <?php 
-        if(admin::rankIs(1))
+        if(user::rankIsMax(1))
         {
         ?>
         <li class="nav-item">

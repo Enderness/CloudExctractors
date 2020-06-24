@@ -1,5 +1,0 @@
-RewriteEngine On
-RewriteRule ^api/([a-z0-9]+)$ /api/$1.php [N]
-RewriteRule ^apps/index$ /apps/index.php [N]
-RewriteRule ^apps/([a-z0-9]+)$ /apps/index.php?scraper=$1 [N]
-RewriteRule ^admin/([a-z0-9]+)$ /admin/$1.php [L]

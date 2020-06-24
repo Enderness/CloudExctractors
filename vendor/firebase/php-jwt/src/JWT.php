@@ -1,5 +1,7 @@
 <?php
 
+namespace Firebase\JWT;
+
 class JWT
 {
     const ASN1_INTEGER = 0x02;

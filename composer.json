@@ -1,6 +1,13 @@
 {
+    "minimum-stability": "dev",
+    "prefer-stable": false,
     "require": {
         "firebase/php-jwt": "^5.2",
-        "fabpot/goutte": "^4.0"
+        "duzun/hquery": "^3.0",
+        "symfony/http-client": "^5.1",
+        "symfony/http-kernel": "^5.1",
+        "arthurkushman/php-wss": "dev-master",
+        "symfony/panther": "^1.0@dev",
+        "rawr/t-regx": "dev-master"
     }
 }

@@ -13476,6 +13476,12 @@ button.bg-danger-muted:focus {
     flex-shrink: 0 !important; }
   .flex-xl-shrink-1 {
     flex-shrink: 1 !important; }
+  select.custom-select
+  {
+      -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  }
   .justify-content-xl-start {
     justify-content: flex-start !important; }
   .justify-content-xl-end {
